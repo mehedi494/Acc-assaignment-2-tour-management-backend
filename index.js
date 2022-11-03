@@ -1,23 +1,16 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const Router = require("./routes/v1/tour.routes")
-// const Routes =
+const mongoose = require("mongoose");
+const dotenv = require('dotenv').config();
+const colors = require("colors");
 
+const app = require("./app");
 
-// middleware
-app.use(express.json());
-app.use(cors());
-
-app.get("/", (req, res) => {
-    res.send("Routes Are Working")
+// database connection
+mongoose.connect(process.env.DATABASE_LOCAL).then(() => {
+    console.log('Database Connected Successfully'.white);
 })
 
-app.use("/api/v1/tours", Router)
-app.use("/api/v1/tour", Router)
 
-app.use("/", (req, res) => {
-    res.status(404).send("No route found")
+const port = (process.env.PORT) || 8000
+app.listen(port, () => {
+    console.log(`Server Running at ${port}`.blue)
 })
-
-module.exports = app
